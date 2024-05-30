@@ -1,0 +1,18 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.UserDAO">
+
+    <!--注册-->
+    <insert id="save" parameterType="User" >
+        insert into
+        values (#{id},#{username},#{realname},#{password},#{gender})
+    </insert>
+
+
+    <!--登录-->
+    <select id="findByUsernameAndPassword" resultType="User">
+        select
+        from
+        where username=#{username} and password=#{password}
+    </select>
+
+</mapper>
