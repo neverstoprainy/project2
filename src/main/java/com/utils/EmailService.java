@@ -73,7 +73,5 @@ public class EmailService {
         mailSender.send(mimeMessage);
         return true;
     }
-    public String getStoredCode(String email) {
-        return redisTemplate.opsForValue().get(email);
-    }
+
 }

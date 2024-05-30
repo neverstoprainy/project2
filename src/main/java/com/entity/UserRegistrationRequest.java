@@ -11,34 +11,10 @@ import lombok.Data;
 
 @Data
 public class UserRegistrationRequest {
-    private User user;
+    private String username;	// 用户名
+    private String password;	// 密码
+    private String email;       //邮箱
     private String emailCode;
     private String captcha;
     private String captchaId;
-
-    // Getters and Setters
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getemailCode() {
-        return emailCode;
-    }
-
-    public void setemailCode(String emailCode) {
-        this.emailCode = emailCode;
-    }
-
-    public String getcaptcha() {
-        return captcha;
-    }
-
-    public void setcaptcha(String captcha) {
-        this.captcha = captcha;
-    }
 }

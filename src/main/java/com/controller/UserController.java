@@ -21,6 +21,7 @@ import javax.mail.MessagingException;
 @RequestMapping("/user")
 public class UserController {
 
+    private User user=new User();
     @Autowired
     private PictureCodeService pictureCodeService;
     @Autowired(required = false)
@@ -46,24 +47,29 @@ public class UserController {
     //开发用户注册
     @PostMapping("/register")
     public Result register(@RequestBody UserRegistrationRequest userRegistrationRequest) {
-        System.out.println("user = " + userRegistrationRequest.getUser());
+        System.out.println("user = " + userRegistrationRequest.getUsername());
         try {
             // 获取用户输入的验证码和存储的验证码
-            String email = userRegistrationRequest.getUser().getEmail();
+            String email = userRegistrationRequest.getEmail();
             log.info("邮箱码：{}",email);
             //从redis中取出验证码信息
             String code = redisTemplate.opsForValue().get(email);
-            String enteredCode = userRegistrationRequest.getemailCode();
-            String storedCode = emailService.getStoredCode(email);
+            String enteredCode = userRegistrationRequest.getEmailCode();
 
+            log.info(redisTemplate.opsForValue().get("u.lpnjog@qq.com"));
             // 验证图形验证码
-            if (!pictureCodeService.validateCaptcha(email, userRegistrationRequest.getcaptcha())) {
+            log.info(userRegistrationRequest.getCaptcha());
+            if (!pictureCodeService.validateCaptcha(email, userRegistrationRequest.getCaptcha())) {
                 return Result.error("图形验证码错误");
             }
 
-            // 验证验证码
-            if (storedCode != null && storedCode.equals(enteredCode)) {
-                userService.save(userRegistrationRequest.getUser());
+            user.setUsername(userRegistrationRequest.getUsername());
+            user.setEmail(userRegistrationRequest.getEmail());
+            user.setPassword(userRegistrationRequest.getPassword());
+
+            // 验证邮箱验证码
+            if (redisTemplate.opsForValue().get(email) != null &&redisTemplate.opsForValue().get(email).equals(enteredCode)) {
+                userService.save(user);
                 return Result.success("注册成功");
             } else {
                 return Result.error("邮箱验证码验证码错误");
