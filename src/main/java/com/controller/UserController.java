@@ -60,7 +60,7 @@ public class UserController {
             // 验证图形验证码
             log.info(userRegistrationRequest.getCaptcha());
             if (!pictureCodeService.validateCaptcha(email, userRegistrationRequest.getCaptcha())) {
-                return Result.error("图形验证码错误");
+                return Result.error("图形验证码输入错误");
             }
 
             user.setUsername(userRegistrationRequest.getUsername());
